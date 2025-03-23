@@ -1,0 +1,27 @@
+GET http://localhost:5000/notes_data
+
+
+###
+GET http://localhost:5000/notes_data/1
+
+
+###
+POST  http://localhost:5000/notes_data
+Content-Type: application/json
+
+{
+    "judul": "coba2",
+    "isi": "hmm coba"
+}
+
+###
+PATCH   http://localhost:5000/notes_data/10
+Content-Type: application/json
+
+{
+    "judul": "Tugas Penting",
+    "isi": "Jangan Lupa Mengerjakan Tugas TCC"
+}
+
+###
+DELETE    http://localhost:5000/notes_data/1
