@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 
 
 const db = new Sequelize('RECOVER_YOUR_DATA', 'root' , '',{
-    host : '35.222.154.88',
+    host : '34.60.177.44',
     dialect : 'mysql',
 } );
 
