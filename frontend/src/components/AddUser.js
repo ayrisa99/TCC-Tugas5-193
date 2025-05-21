@@ -12,7 +12,7 @@ const AddUser = () => {
     const saveUser = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${BASE_URL}/notes_data/`, {
+            await axios.post(`/notes_data/`, {
                 judul,
                 isi
             });

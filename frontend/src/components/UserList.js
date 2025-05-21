@@ -13,7 +13,7 @@ const UserList = () => {
 
     const getUsers = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/notes_data`);
+            const response = await axios.get("/notes_data");
             setUsers(response.data);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -22,7 +22,7 @@ const UserList = () => {
 
     const deleteUser = async (id) => {
         try {
-            await axios.delete(`${BASE_URL}/notes_data/${id}`);
+            await axios.delete("/notes_data/${id}");
             getUsers();
         } catch (error) {
             console.log(error);

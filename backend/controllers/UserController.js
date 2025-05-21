@@ -35,46 +35,72 @@ export const Register = async (req, res) => {
 
 // LOGIN
 export const Login = async (req, res) => {
-    try {
-        const user = await Users.findOne({
-            where: {
-                username: req.body.username
-            }
-        });
-        if (!user) {
-            console.log("⚠️ User tidak ditemukan");
-            return res.status(404).json({ msg: "User not found" });
-        }
+  try {
+    // Log data request untuk debugging
+    console.log("Login request:", req.body);
 
-        const match = await bcrypt.compare(req.body.password, user.password);
-        if (!match) {
-            console.log("⚠️ Password salah");
-            return res.status(400).json({ msg: "Wrong password" });
-        }
+    const { username, password } = req.body;
 
-        const userId = user.id;
-        const username = user.username;
-        const accessToken = jwt.sign({ userId, username }, process.env.ACCESS_TOKEN_SECRET, {
-            expiresIn: "15m"
-        });
-        const refreshToken = jwt.sign({ userId, username }, process.env.REFRESH_TOKEN_SECRET, {
-            expiresIn: "1d"
-        });
-
-        await Users.update({ refresh_token: refreshToken }, {
-            where: { id: userId }
-        });
-
-        res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000
-        });
-
-        res.json({ accessToken });
-    } catch (error) {
-        console.error("🔥 LOGIN ERROR:", error);
-        res.status(500).json({ msg: "Login Failed" });
+    // Validasi input dasar
+    if (!username || !password) {
+      return res.status(400).json({ msg: "Username and password are required" });
     }
+
+    // Cari user di database berdasarkan username
+    const user = await Users.findOne({
+      where: { username }
+    });
+    console.log("User from DB:", user);
+
+    // Jika user tidak ditemukan, kembalikan response error
+    if (!user) {
+      console.log("⚠️ User tidak ditemukan");
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Bandingkan password yang dikirim dengan yang di database (hash)
+    const match = await bcrypt.compare(password, user.password);
+    console.log("Password match:", match);
+
+    if (!match) {
+      console.log("⚠️ Password salah");
+      return res.status(400).json({ msg: "Wrong password" });
+    }
+
+    // Jika cocok, buat access token dan refresh token JWT
+    const userId = user.id;
+    const accessToken = jwt.sign(
+      { userId, username },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "15m" }
+    );
+    const refreshToken = jwt.sign(
+      { userId, username },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    // Simpan refresh token ke database
+    await Users.update(
+      { refresh_token: refreshToken },
+      { where: { id: userId } }
+    );
+
+    // Kirim refresh token sebagai cookie HTTP only
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 hari
+      secure: process.env.NODE_ENV === "production", // hanya HTTPS di production
+      sameSite: "strict"
+    });
+
+    // Kirim access token di response body
+    res.json({ accessToken });
+
+  } catch (error) {
+    console.error("🔥 LOGIN ERROR:", error);
+    res.status(500).json({ msg: "Login Failed" });
+  }
 };
 
 // LOGOUT

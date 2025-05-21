@@ -12,7 +12,7 @@ const EditUser = () => {
 
     const getUsersByID = useCallback(async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/notes_data/${id}`);
+            const response = await axios.get("/notes_data");
             setJudul(response.data.judul);
             setIsi(response.data.isi);
         } catch (error) {
@@ -27,7 +27,7 @@ const EditUser = () => {
     const updateUser = async (e) => {
         e.preventDefault();
         try {
-            await axios.patch(`${BASE_URL}/notes_data/${id}`, {
+            await axios.patch(`/notes_data/${id}`, {
                 judul,
                 isi
             });

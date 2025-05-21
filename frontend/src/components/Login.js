@@ -1,41 +1,43 @@
 import React, { useState } from "react";
 import { Button, TextField, Card, CardContent, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../api/axiosInstance";
+import useAuth from "../auth/useAuth"; // 
 
 const Login = () => {
+  const { setAccessToken } = useAuth(); 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); 
 
  const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!username || !password) {
-    alert("Please enter username and password");
-    return;
-  }
+    if (!username || !password) {
+      alert("Please enter username and password");
+      return;
+    }
 
-  try {
-    const response = await axios.post(
-      "https://backend-193-174534490336.us-central1.run.app/login",
-      { username, password },
-      { withCredentials: true }
-    );
+    try {
+      const response = await axios.post(
+        "https://backend-193-174534490336.us-central1.run.app/login",
+        { username, password },
+        { withCredentials: true }
+      );
 
-    const { accessToken } = response.data;
+      const { accessToken } = response.data;
 
-    // ✅ Simpan token di localStorage dan ke state global kamu (misalnya useAuth)
-    localStorage.setItem("token", accessToken);
-    console.log("✅ Login berhasil:", accessToken);
-    navigate("/notes_data"); // atau halaman lain
+      localStorage.setItem("accessToken", accessToken);
+      setAccessToken(accessToken); // penting, agar React re-render dan private route aktif
 
-  } catch (error) {
-    console.error("❌ Login gagal:", error.response?.data?.msg || error.message);
-    alert(error.response?.data?.msg || "Login failed");
-  }
-};
+      console.log("✅ Login berhasil:", accessToken);
+      navigate("/users");
 
+    } catch (error) {
+      console.error("❌ Login gagal:", error.response?.data?.msg || error.message);
+      alert(error.response?.data?.msg || "Login failed");
+    }
+  };
 
 
   return (
