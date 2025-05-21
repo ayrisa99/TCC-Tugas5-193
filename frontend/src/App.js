@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
+import Register from "./components/Register";
 import UserList from "./components/UserList";
 import AddUser from "./components/AddUser";
 import EditUser from "./components/EditUser";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import PrivateRoute from "./components/PrivateRoute";
 import { AuthProvider } from "./auth/authProvider";
 import AxiosInterceptor from "./api/axiosInterceptor";
-import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -14,10 +14,13 @@ function App() {
       <AxiosInterceptor />
       <BrowserRouter>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Protected Routes */}
           <Route
-            path="users"
+            path="/users"
             element={
               <PrivateRoute>
                 <UserList />
@@ -25,7 +28,7 @@ function App() {
             }
           />
           <Route
-            path="users/add"
+            path="/users/add"
             element={
               <PrivateRoute>
                 <AddUser />
@@ -33,7 +36,7 @@ function App() {
             }
           />
           <Route
-            path="users/edit/:id"
+            path="/users/edit/:id"
             element={
               <PrivateRoute>
                 <EditUser />
