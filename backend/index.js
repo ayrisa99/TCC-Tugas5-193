@@ -5,39 +5,44 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import router from "./routes/UserRoute.js";
 import db from "./config/database.js";
+import "./models/index.js"; // 👈 akan otomatis sync DB & relasi
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// 👉 Aktifkan CORS
-app.use(cors({
+// Konfigurasi CORS
+const corsOptions = {
+  origin: [
+    "https://frontend-193-dot-f-12-450706.uc.r.appspot.com",
+    "http://localhost:3000"
+  ],
   credentials: true,
-  origin: "https://frontend-193-dot-f-12-450706.uc.r.appspot.com"
-}));
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
 
-// 👉 Tangani preflight request (OPTIONS) juga
-app.options('*', cors({
-  credentials: true,
-  origin: "https://frontend-193-dot-f-12-450706.uc.r.appspot.com"
-}));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(cookieParser());
 app.use(express.json());
-
 app.use(router);
 
-const PORT = process.env.PORT || 5000;
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
 
 db.authenticate()
   .then(() => {
     console.log("✅ Database connected.");
-    return db.sync(); // optional kalau belum migrasi
-  })
-  .then(() => {
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    app.listen(PORT, () => {
+      console.log(`🚀 Server is running and listening on port: ${PORT}`);
+    });
   })
   .catch((err) => {
     console.error("❌ Failed to connect to the database:", err.message);
   });
-
