@@ -1,23 +1,42 @@
 import React, { useState } from "react";
 import { Button, TextField, Card, CardContent, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); 
 
- const handleLogin = (e) => {
-    e.preventDefault();
+ const handleLogin = async (e) => {
+  e.preventDefault();
 
-    // Contoh validasi sederhana, bisa kamu ganti sesuai backend kamu
-    if (username && password) {
-      // Simulasi login sukses, arahkan ke /users
-      navigate("/users");
-    } else {
-      alert("Please enter username and password");
-    }
-  };
+  // 🔒 Validasi form terlebih dahulu
+  if (!username || !password) {
+    alert("Please enter username and password");
+    return; // hentikan proses kalau tidak valid
+  }
+
+  try {
+    const response = await axios.post(
+      "https://backend-193-174534490336.us-central1.run.app/login",
+      {
+        username,
+        password,
+      },
+      {
+        withCredentials: true, // penting jika backend pakai cookie
+      }
+    );
+
+    console.log("✅ Login berhasil:", response.data);
+    navigate("/users"); // redirect ke halaman setelah login
+  } catch (error) {
+    console.error("❌ Login gagal:", error.response?.data?.msg || error.message);
+    alert(error.response?.data?.msg || "Login failed");
+  }
+};
+
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f3f4f6", display: "flex", justifyContent: "center", alignItems: "center" }}>
