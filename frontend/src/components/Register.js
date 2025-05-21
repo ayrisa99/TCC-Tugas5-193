@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, TextField, Card, CardContent, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import axios from "../api/axiosInstance"; // pastikan path ini benar
+import { useNavigate } from "react-router-dom"; // tambahkan di atas
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -8,16 +10,30 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    // Validasi dan proses registrasi di sini
-    if (password !== confirmPassword) {
-      alert("Password dan konfirmasi password tidak cocok!");
-      return;
-    }
+  const navigate = useNavigate();
 
-    // Lanjutkan proses registrasi
-  };
+ const handleRegister = async (e) => {
+  e.preventDefault();
+  if (password !== confirmPassword) {
+    alert("Password dan konfirmasi password tidak cocok!");
+    return;
+  }
+
+  try {
+    await axios.post("/register", {
+      username,
+      email,
+      password,
+      confirmPassword,
+    });
+
+    alert("Registrasi berhasil! Silakan login.");
+    navigate("/"); // Redirect ke halaman login
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.msg || "Gagal registrasi");
+  }
+};
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f3f4f6", display: "flex", justifyContent: "center", alignItems: "center" }}>
