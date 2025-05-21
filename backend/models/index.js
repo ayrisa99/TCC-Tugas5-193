@@ -7,7 +7,16 @@ import Notes from "./NotesModels.js";
 Users.hasMany(Notes, { foreignKey: "userId", as: "notes" });
 Notes.belongsTo(Users, { foreignKey: "userId", as: "user" });
 
-// Sync DB jika belum migrasi (opsional saat produksi)
-db.sync().then(() => console.log("✅ Models synchronized."));
+// 🔁 Sinkronisasi TABEL dari semua model
+const syncDatabase = async () => {
+  try {
+    await db.sync({ alter: true }); // alter: true = aman tanpa hapus data
+    console.log("✅ All models were synchronized successfully.");
+  } catch (error) {
+    console.error("❌ Failed to sync models:", error);
+  }
+};
+
+syncDatabase();
 
 export { Users, Notes };

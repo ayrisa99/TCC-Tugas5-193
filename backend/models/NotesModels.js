@@ -25,6 +25,3 @@ const Notes = db.define('notes_data', {
 
 export default Notes;
 
-(async () => {
-    await db.sync();
-})();
