@@ -11,31 +11,31 @@ const Login = () => {
  const handleLogin = async (e) => {
   e.preventDefault();
 
-  // 🔒 Validasi form terlebih dahulu
   if (!username || !password) {
     alert("Please enter username and password");
-    return; // hentikan proses kalau tidak valid
+    return;
   }
 
   try {
     const response = await axios.post(
       "https://backend-193-174534490336.us-central1.run.app/login",
-      {
-        username,
-        password,
-      },
-      {
-        withCredentials: true, // penting jika backend pakai cookie
-      }
+      { username, password },
+      { withCredentials: true }
     );
 
-    console.log("✅ Login berhasil:", response.data);
-    navigate("/users"); // redirect ke halaman setelah login
+    const { accessToken } = response.data;
+
+    // ✅ Simpan token di localStorage dan ke state global kamu (misalnya useAuth)
+    localStorage.setItem("token", accessToken);
+    console.log("✅ Login berhasil:", accessToken);
+    navigate("/notes_data"); // atau halaman lain
+
   } catch (error) {
     console.error("❌ Login gagal:", error.response?.data?.msg || error.message);
     alert(error.response?.data?.msg || "Login failed");
   }
 };
+
 
 
   return (
