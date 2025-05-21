@@ -3,40 +3,61 @@ import { Button, TextField, Card, CardContent, Typography } from "@mui/material"
 import { Link } from "react-router-dom";
 import axios from "../api/axiosInstance"; // pastikan path ini benar
 import { useNavigate } from "react-router-dom"; // tambahkan di atas
+import Snackbar from "@mui/material/Snackbar";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const navigate = useNavigate();
+    // Snackbar states
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState("");
+  const [snackbarType, setSnackbarType] = useState("success"); // "succ
 
- const handleRegister = async (e) => {
-  e.preventDefault();
-  if (password !== confirmPassword) {
-    alert("Password dan konfirmasi password tidak cocok!");
-    return;
-  }
+const handleRegister = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setSnackbarMsg("Password dan konfirmasi password tidak cocok!");
+      setSnackbarType("error");
+      setSnackbarOpen(true);
+      return;
+    }
 
-  try {
-    await axios.post("/register", {
-      username,
-      email,
-      password,
-      confirmPassword,
-    });
+    try {
+      await axios.post("/register", {
+        username,
+        email,
+        password,
+        confirmPassword,
+      });
 
-    alert("Registrasi berhasil! Silakan login.");
-    navigate("/"); // Redirect ke halaman login
-  } catch (err) {
-    console.error(err);
-    alert(err.response?.data?.msg || "Gagal registrasi");
-  }
-};
+      setSnackbarMsg("Registrasi berhasil! Silakan login.");
+      setSnackbarType("success");
+      setSnackbarOpen(true);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (err) {
+      setSnackbarMsg(err.response?.data?.msg || "Gagal registrasi");
+      setSnackbarType("error");
+      setSnackbarOpen(true);
+    }
+  };
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f3f4f6", display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#f3f4f6",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Card sx={{ padding: 4, maxWidth: 400, width: "100%" }}>
         <CardContent>
           <Typography variant="h5" component="h2" gutterBottom>
@@ -93,6 +114,22 @@ const Register = () => {
           </Typography>
         </CardContent>
       </Card>
+
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity={snackbarType}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMsg}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
