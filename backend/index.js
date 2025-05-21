@@ -27,8 +27,17 @@ app.use(express.json());
 
 app.use(router);
 
-db.sync();
-
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+db.authenticate()
+  .then(() => {
+    console.log("✅ Database connected.");
+    return db.sync(); // optional kalau belum migrasi
+  })
+  .then(() => {
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error("❌ Failed to connect to the database:", err.message);
+  });
 
