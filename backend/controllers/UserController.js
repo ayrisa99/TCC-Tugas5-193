@@ -4,19 +4,32 @@ import jwt from "jsonwebtoken";
 
 // REGISTER
 export const Register = async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        const salt = await bcrypt.genSalt();
-        const hashPassword = await bcrypt.hash(password, salt);
-        await Users.create({
-            username,
-            password: hashPassword
-        });
-        res.status(201).json({ msg: "User Registered" });
-    } catch (error) {
-        console.error("Register Error:", error); // <== cetak semua error
-        res.status(500).json({ msg: "Registration Failed", error: error.message });
+  const { username, password } = req.body;
+
+  try {
+    if (!username || !password) {
+      return res.status(400).json({ msg: "Username and password are required" });
     }
+
+    const existingUser = await Users.findOne({ where: { username } });
+    if (existingUser) {
+      return res.status(409).json({ msg: "Username already taken" });
+    }
+
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    await Users.create({
+      username,
+      password: hashedPassword
+    });
+
+    res.status(201).json({ msg: "User registered successfully" });
+
+  } catch (error) {
+    console.error("❌ Register Error:", error); // ⬅️ tampilkan log lengkap
+    res.status(500).json({ msg: error.message || "Internal Server Error" });
+  }
 };
 
 
