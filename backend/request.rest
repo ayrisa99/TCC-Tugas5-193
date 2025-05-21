@@ -1,27 +1,60 @@
-GET http://localhost:5000/notes_data
+### Get all notes
+GET http://localhost:5000/notes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiaW1hdTExIiwiaWF0IjoxNzQ3ODIzNTUyLCJleHAiOjE3NDc4MjQ0NTJ9.1jx6oRr3jA335I12Sr7is1IJtOoWCWXiUF_qCYHQGYk
 
 
 ###
 GET http://localhost:5000/notes_data/1
 
-
 ###
-POST  http://localhost:5000/notes_data
+POST http://localhost:5000/notes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiaW1hdTExIiwiaWF0IjoxNzQ3ODIzNTUyLCJleHAiOjE3NDc4MjQ0NTJ9.1jx6oRr3jA335I12Sr7is1IJtOoWCWXiUF_qCYHQGYk
 Content-Type: application/json
 
 {
-    "judul": "coba2",
-    "isi": "hmm coba"
+  "judul": "imau ganteng",
+  "isi": "Jangan lupa kerjakan tugas autentikasi dan relasi user"
 }
 
+
 ###
-PATCH   http://localhost:5000/notes_data/10
+PATCH http://localhost:5000/notes/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiaW1hdTExIiwiaWF0IjoxNzQ3ODIzNTUyLCJleHAiOjE3NDc4MjQ0NTJ9.1jx6oRr3jA335I12Sr7is1IJtOoWCWXiUF_qCYHQGYk
 Content-Type: application/json
 
 {
-    "judul": "Tugas Penting",
-    "isi": "Jangan Lupa Mengerjakan Tugas TCC"
+  "judul": "apa ya",
+  "isi": "Jangan Lupa Mengerjakan Tugas TCC"
 }
 
 ###
-DELETE    http://localhost:5000/notes_data/1
+POST http://localhost:5000/register
+Content-Type: application/json
+
+{
+  "username": "imau11",
+  "password": "imaaaau"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "username": "imau11",
+  "password": "imaaaau"
+}
+
+###
+POST http://localhost:5000/RECOVERY_
+Content-Type: application/json
+
+{
+  "name": "Melati",
+  "email": "user@example.com",
+  "gender": "female",
+  "password": "password123"
+}
+
+###
+DELETE http://localhost:5000/notes_data/1

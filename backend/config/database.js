@@ -1,9 +1,20 @@
+// backend/config/database.js
 import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
+dotenv.config();
 
-
-const db = new Sequelize('RECOVER_YOUR_DATA', 'root' , '',{
-    host : '35.222.154.88',
-    dialect : 'mysql',
-} );
+const db = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
+    {
+        host: process.env.DB_HOST,
+        dialect: "mysql",
+        logging: false,
+        define: {
+            timestamps: false
+        }
+    }
+);
 
 export default db;
