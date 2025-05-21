@@ -102,29 +102,30 @@ export const Logout = async (req, res) => {
 
 //Refresh Token
 export const RefreshToken = async (req, res) => {
-    try {
-        const refreshToken = req.cookies.refreshToken;
-        if (!refreshToken) return res.sendStatus(401);
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) return res.sendStatus(401);
 
-        const user = await Users.findOne({
-            where: { refresh_token: refreshToken }
-        });
-        if (!user) return res.sendStatus(403);
+    const user = await Users.findOne({
+      where: { refresh_token: refreshToken }
+    });
+    if (!user) return res.sendStatus(403);
 
-        jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
-            if (err) return res.sendStatus(403);
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+      if (err) return res.sendStatus(403);
 
-            const userId = user.id;
-            const username = user.username;
-            const accessToken = jwt.sign({ userId, username }, process.env.JWT_SECRET, {
-                expiresIn: '15m'
-            });
+      const userId = user.id;
+      const username = user.username;
+      const accessToken = jwt.sign({ userId, username }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '15m'
+      });
 
-            res.json({ accessToken });
-        });
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ msg: "Failed to refresh token" });
-    }
+      res.json({ accessToken });
+    });
+  } catch (error) {
+    console.error("🔥 RefreshToken error:", error.message);
+    res.status(500).json({ msg: "Failed to refresh token" });
+  }
 };
+
 
