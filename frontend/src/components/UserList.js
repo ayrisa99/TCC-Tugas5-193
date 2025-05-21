@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../api/axiosInstance"; // ✅ ini yang sudah terhubung ke interceptor + token
 import { Link } from "react-router-dom";
 import { Button, Card, CardContent, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { BASE_URL } from "../utils";

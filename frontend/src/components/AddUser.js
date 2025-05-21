@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from "../api/axiosInstance"; // ✅ ini yang sudah terhubung ke interceptor + token
 import { useNavigate } from 'react-router-dom';
 import "bulma/css/bulma.min.css"; 
 import { BASE_URL } from "../utils";
