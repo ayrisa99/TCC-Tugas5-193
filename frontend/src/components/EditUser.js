@@ -11,30 +11,32 @@ const EditUser = () => {
     const { id } = useParams();
 
     const getUsersByID = useCallback(async () => {
-        try {
-            const response = await axios.get("/notes_data");
-            setJudul(response.data.judul);
-            setIsi(response.data.isi);
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
+    try {
+        const response = await axios.get(`/notes_data/${id}`);
+        setJudul(response.data.judul);
+        setIsi(response.data.isi);
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+    }
     }, [id]);
+
 
     useEffect(() => {
         getUsersByID();
     }, [getUsersByID]);
 
     const updateUser = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.patch(`/notes_data/${id}`, {
-                judul,
-                isi
-            });
-            navigate("/");
-        } catch (error) {
-            console.log(error);
-        }
+    e.preventDefault();
+    console.log("Update button clicked");
+    try {
+        await axios.patch(`/notes_data/${id}`, {
+            judul,
+            isi
+        });
+        navigate("/users");
+    } catch (error) {
+        console.log(error);
+    }
     };
 
     return (
