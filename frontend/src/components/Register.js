@@ -3,7 +3,6 @@ import { Button, TextField, Card, CardContent, Typography, Snackbar, Alert } fro
 import { Link } from "react-router-dom";
 import axios from "../api/axiosInstance"; // pastikan path ini benar
 import { useNavigate } from "react-router-dom"; // tambahkan di atas
-import Snackbar from "@mui/material/Snackbar";
 
 const Register = () => {
   const navigate = useNavigate();
