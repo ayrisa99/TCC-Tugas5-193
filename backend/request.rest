@@ -32,8 +32,8 @@ POST http://localhost:5000/register
 Content-Type: application/json
 
 {
-  "username": "imau11",
-  "password": "imaaaau"
+  "username": "aii",
+  "password": "aii"
 }
 
 ###
