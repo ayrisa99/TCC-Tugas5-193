@@ -9,6 +9,7 @@ const AxiosInterceptor = () => {
   useEffect(() => {
     const requestInterceptor = axios.interceptors.request.use(
       (config) => {
+        console.log("Token di interceptor:", accessToken);
         if (accessToken) {
           config.headers.Authorization = `Bearer ${accessToken}`;
         }
