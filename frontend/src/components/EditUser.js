@@ -33,7 +33,7 @@ const EditUser = () => {
   try {
     const response = await axios.patch(`/notes_data/${id}`, { judul, isi });
     console.log("Server response:", response.data);
-    navigate("/users");
+    navigate("/notes_data");
   } catch (error) {
     console.error("Update error:", error.response?.data || error.message);
   }

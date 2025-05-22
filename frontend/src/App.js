@@ -20,7 +20,7 @@ function App() {
 
           {/* Protected Routes */}
           <Route
-            path="/users"
+            path="/notes_data"
             element={
               <PrivateRoute>
                 <UserList />
@@ -28,7 +28,7 @@ function App() {
             }
           />
           <Route
-            path="/users/add"
+            path="/notes_data/add"
             element={
               <PrivateRoute>
                 <AddUser />
@@ -36,7 +36,7 @@ function App() {
             }
           />
           <Route
-            path="/users/edit/:id"
+            path="/notes_data/edit/:id"
             element={
               <PrivateRoute>
                 <EditUser />

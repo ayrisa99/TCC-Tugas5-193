@@ -16,7 +16,7 @@ const AddUser = () => {
                 judul,
                 isi
             });
-            navigate("/users");
+            navigate("/notes_data");
         } catch (error) {
             console.log("Error saving user data:", error);
         }

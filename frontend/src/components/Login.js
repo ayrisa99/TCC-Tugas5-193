@@ -31,7 +31,7 @@ const Login = () => {
       setAccessToken(accessToken); // penting, agar React re-render dan private route aktif
 
       console.log("✅ Login berhasil:", accessToken);
-      navigate("/users");
+      navigate("/notes_data");
 
     } catch (error) {
       console.error("❌ Login gagal:", error.response?.data?.msg || error.message);
