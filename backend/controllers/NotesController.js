@@ -44,18 +44,31 @@ export const createNote = async (req, res) => {
 };
 
 export const updateNote = async (req, res) => {
-    try {
-        await Notes.update(req.body, {
-            where: {
-                id: req.params.id
-            }
-        });
-        res.status(200).json({ msg: "Note Updated" });
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ error: error.message });
+  try {
+    console.log("PATCH /notes_data/:id called");
+    console.log("Params id:", req.params.id);
+    console.log("Body:", req.body);
+    console.log("UserId from token:", req.userId);
+
+    const result = await Notes.update(req.body, {
+      where: {
+        id: req.params.id,
+        userId: req.userId
+      }
+    });
+
+    if (result[0] === 0) {
+      return res.status(404).json({ msg: "Note not found or unauthorized" });
     }
+
+    res.status(200).json({ msg: "Note Updated" });
+  } catch (error) {
+    console.log("Error in updateNote:", error.message);
+    res.status(500).json({ error: error.message });
+  }
 };
+
+
 
 export const deleteNote = async (req, res) => {
     try {
