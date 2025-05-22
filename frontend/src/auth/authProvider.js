@@ -4,14 +4,14 @@ import axios from "../api/axiosInstance";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("token"));
+  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
 
   const login = async (data) => {
     const response = await axios.post("/login", data, {
       withCredentials: true,
     });
     setAccessToken(response.data.accessToken);
-    localStorage.setItem("token", response.data.accessToken);
+    localStorage.setItem("accessToken", response.data.accessToken);
   };
 
   const refreshAccessToken = async () => {
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       });
       setAccessToken(response.data.accessToken);
-      localStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("accessToken", response.data.accessToken);
       return response.data.accessToken;
     } catch {
       return null;
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       withCredentials: true,
     });
     setAccessToken(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
   };
 
   return (

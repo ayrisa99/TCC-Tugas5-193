@@ -1,4 +1,3 @@
-// src/api/axiosInterceptor.js
 import { useEffect } from "react";
 import axios from "./axiosInstance";
 import useAuth from "../auth/useAuth";

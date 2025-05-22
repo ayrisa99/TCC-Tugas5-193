@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from "../api/axiosInstance"; // ✅ ini yang sudah terhubung ke interceptor + token
 import { useNavigate, useParams } from 'react-router-dom';
 import "bulma/css/bulma.min.css"; 
-import { BASE_URL } from "../utils";
+// import { BASE_URL } from "../utils";
 
 const EditUser = () => {
     const [judul, setJudul] = useState("");
