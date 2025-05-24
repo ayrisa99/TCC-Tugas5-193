@@ -91,7 +91,7 @@ export const Login = async (req, res) => {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 1 hari
     secure: process.env.NODE_ENV === "production", // harus HTTPS di production
-    sameSite: "None" // supaya cookie bisa diakses cross-site (frontend berbeda domain)
+    sameSite: "strict" // supaya cookie bisa diakses cross-site (frontend berbeda domain)
   });
 
 
