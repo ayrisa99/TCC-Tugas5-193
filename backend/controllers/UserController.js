@@ -86,16 +86,24 @@ export const Login = async (req, res) => {
       { where: { id: userId } }
     );
 
-    // Kirim refresh token sebagai cookie HTTP only
-    res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000, // 1 hari
-    secure: process.env.NODE_ENV === "production", // harus HTTPS di production
-    sameSite: "strict" // supaya cookie bisa diakses cross-site (frontend berbeda domain)
+  //   // Kirim refresh token sebagai cookie HTTP only
+  //   res.cookie("refreshToken", refreshToken, {
+  //   httpOnly: true,
+  //   maxAge: 24 * 60 * 60 * 1000, 
+  //   secure: process.env.NODE_ENV === "production", 
+  //   sameSite: "strict" 
+  // });
+
+  // Setelah generate refreshToken
+  res.cookie("refreshToken", refreshToken, {
+  httpOnly: true,
+  maxAge: 24 * 60 * 60 * 1000,  // 1 hari
+  secure: process.env.NODE_ENV === "production",  // HTTPS wajib di production
+  sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+  // domain dan path bisa disesuaikan kalau perlu
   });
 
-
-    // Kirim access token di response body
+    
     res.json({ accessToken });
 
   } catch (error) {
