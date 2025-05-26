@@ -43,9 +43,11 @@ app.use((err, req, res, next) => {
 });
 
 // Cek koneksi database lalu mulai server
+console.log("Starting DB connection...");
 db.authenticate()
   .then(() => {
     console.log("✅ Database connected.");
+    console.log("PORT:", PORT);
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port: ${PORT}`);
     });
@@ -53,3 +55,4 @@ db.authenticate()
   .catch((err) => {
     console.error("❌ Failed to connect to the database:", err.message);
   });
+
