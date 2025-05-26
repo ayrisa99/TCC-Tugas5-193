@@ -10,10 +10,9 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    // Pastikan deklarasi variabel accessToken di sini:
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
