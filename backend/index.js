@@ -10,7 +10,7 @@ import "./models/index.js"; // Sinkronisasi DB dan relasi
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Konfigurasi CORS untuk frontend yang diizinkan mengakses API
 const corsOptions = {
