@@ -8,11 +8,11 @@ const instance = axios.create({
   },
 });
 
-// Interceptor untuk menambahkan token Authorization
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
+    // Pastikan deklarasi variabel accessToken di sini:
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
