@@ -16,7 +16,8 @@ const PORT = process.env.PORT || 3000;
 const corsOptions = {
   origin: [
     "https://frontend-193-dot-f-12-450706.uc.r.appspot.com",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://localhost:3001" 
   ],
   credentials: true, // penting untuk cookie
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -43,16 +44,17 @@ app.use((err, req, res, next) => {
 });
 
 // Cek koneksi database lalu mulai server
-console.log("Starting DB connection...");
+console.log("Starting app...");
 db.authenticate()
   .then(() => {
-    console.log("✅ Database connected.");
-    console.log("PORT:", PORT);
+    console.log("DB connected.");
+    console.log("Listening on port:", PORT);
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on port: ${PORT}`);
+      console.log(`Server running on port: ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error("❌ Failed to connect to the database:", err.message);
+    console.error("DB connection failed:", err);
+    process.exit(1);
   });
 
